@@ -14,15 +14,30 @@ interface ListProviderProps {
 export interface Pokemons {
   id: string;
   name: string;
-  image: string;
+  images: {
+    small: string;
+    large: string;
+  };
   subtypes: [];
-  types: [];
-  weaknesses: [];
-  attacks: [];
+  types: Array<string>;
+  weaknesses: [
+    {
+      type: string;
+    }
+  ];
+  attacks: [
+    {
+      name: string;
+    }
+  ];
 }
 
 interface ListProviderData {
   list: Pokemons[];
+  setList: any;
+  filter: string;
+  setFilter: any;
+  loading: boolean;
 }
 
 const ListContext = createContext<ListProviderData>({} as ListProviderData);
@@ -35,18 +50,34 @@ const useList = () => {
 
 const ListProvider = ({ children }: ListProviderProps) => {
   const [list, setList] = useState<Pokemons[]>([] as Pokemons[]);
+  const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const required = () => {
     axios
       .get("https://api.pokemontcg.io/v2/cards")
       .then((response) => setList(response.data.data))
+      .then(() => setLoading(false))
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    required();
   }, []);
+
+  /*
+  const filtered = list.filter((list) => list.types.includes(filter));
+  console.log(filtered);
+  */
 
   return (
     <ListContext.Provider
       value={{
         list,
+        setList,
+        filter,
+        setFilter,
+        loading,
       }}
     >
       {children}

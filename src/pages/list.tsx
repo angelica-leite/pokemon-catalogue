@@ -1,17 +1,12 @@
-import FilterTypes from "../components/FilterTypes";
-import Header from "../components/Header";
 import PokemonList from "../components/PokemonList";
 import { ListProvider } from "../contexts/ListProvider";
 
-const Home = () => {
+export default function List() {
   return (
     <>
-      <Header />
       <ListProvider>
-        <FilterTypes />
+        <PokemonList />
       </ListProvider>
     </>
   );
-};
-
-export default Home;
+}
