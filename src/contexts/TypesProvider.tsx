@@ -11,12 +11,6 @@ interface TypesProviderProps {
   children: ReactNode;
 }
 
-/*
-  export interface ListTypes {
-    data: Array<string>;
-  }
-  */
-
 interface TypesProviderData {
   listTypes: Array<string>;
   loadingTypes: boolean;
