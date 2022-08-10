@@ -1,16 +1,14 @@
+import { NextPage } from "next";
 import FilterTypes from "../components/FilterTypes";
 import Header from "../components/Header";
-import PokemonList from "../components/PokemonList";
-import { ListProvider } from "../contexts/ListProvider";
+import styles from "./../../styles/Home.module.css";
 
-const Home = () => {
+const Home: NextPage = () => {
   return (
-    <>
+    <div className={styles.container}>
       <Header />
-      <ListProvider>
-        <FilterTypes />
-      </ListProvider>
-    </>
+      <FilterTypes />
+    </div>
   );
 };
 

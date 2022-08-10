@@ -1,30 +1,39 @@
 import Link from "next/link";
-import { useList } from "../../contexts/ListProvider";
+import styles from "../../../styles/Home.module.css";
+import { LoadingOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import { useTypes } from "../../contexts/TypesProvider";
 
-export default function FilterTypes() {
-  const { list, filter, setFilter } = useList();
-
-  const arrayTypes = list.map((item) => item.types);
-  console.log(arrayTypes);
-
-  const types = arrayTypes.map((item) => item[0]);
-
-  const filteredArray = types.filter(function (ele, pos) {
-    return types.indexOf(ele) == pos;
-  });
+export default function FilterTypes(): JSX.Element {
+  const { listTypes, loadingTypes, setType } = useTypes();
 
   return (
-    <section>
-      <h1>Escolha o tipo de Pokémon:</h1>
-      <ul>
-        {filteredArray.map((type) => (
-          <li key={type}>
-            <Link href="/list">
-              <button onClick={() => setFilter(type)}>{type}</button>
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <section className={styles.main}>
+      <h1 className={styles.title}>Escolha o tipo de Pokémon:</h1>
+      {loadingTypes ? (
+        <div className={styles.loading}>
+          <LoadingOutlined width="5em" height="5em" />
+          <span>Carregando...</span>
+        </div>
+      ) : (
+        <ul className={styles.li}>
+          {listTypes.map((type, index) => (
+            <li className={styles.types} key={index}>
+              <Image
+                src={require(`../../../public/assets/${type}.png`)}
+                width={150}
+                height={120}
+                alt={`ìcone do tipo do Pokémon ${type}`}
+              />
+              <Link href="/list">
+                <button className={styles.button} onClick={() => setType(type)}>
+                  {type}
+                </button>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
