@@ -6,6 +6,7 @@ import {
   useEffect,
 } from "react";
 import axios from "axios";
+import { useTypes } from "./TypesProvider";
 
 interface ListProviderProps {
   children: ReactNode;
@@ -23,11 +24,13 @@ export interface Pokemons {
   weaknesses: [
     {
       type: string;
+      value: string;
     }
   ];
   attacks: [
     {
       name: string;
+      text: string;
     }
   ];
 }
@@ -35,8 +38,6 @@ export interface Pokemons {
 interface ListProviderData {
   list: Pokemons[];
   setList: any;
-  filter: string;
-  setFilter: any;
   loading: boolean;
 }
 
@@ -50,8 +51,9 @@ const useList = () => {
 
 const ListProvider = ({ children }: ListProviderProps) => {
   const [list, setList] = useState<Pokemons[]>([] as Pokemons[]);
-  const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const { type } = useTypes();
 
   const required = () => {
     axios
@@ -65,18 +67,11 @@ const ListProvider = ({ children }: ListProviderProps) => {
     required();
   }, []);
 
-  /*
-  const filtered = list.filter((list) => list.types.includes(filter));
-  console.log(filtered);
-  */
-
   return (
     <ListContext.Provider
       value={{
         list,
         setList,
-        filter,
-        setFilter,
         loading,
       }}
     >
